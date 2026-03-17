@@ -13,10 +13,33 @@ describe("toCamelCase", () => {
     expect(toCamelCase("Equipment Age")).toBe("equipmentAge");
     expect(toCamelCase("Make/Model")).toBe("makeModel");
     expect(toCamelCase("Call Duration")).toBe("callDuration");
+    expect(toCamelCase("Call Duration (minutes)")).toBe("callDurationMinutes");
   });
 });
 
 describe("mapSheetValuesToCalls", () => {
+  it("maps call duration in minutes to seconds when minutes column is present", () => {
+    const values: readonly (readonly (string | number | boolean | null | undefined)[])[] = [
+      ["Date", "Name", "Number", "Request", "Call Duration (minutes)"],
+      ["2026-03-17T17:00:00Z", "Test Caller", "555-1234", "help", 2.14],
+    ];
+
+    const [call] = mapSheetValuesToCalls(values);
+
+    expect(call.callDuration).toBeCloseTo(2.14 * 60, 5);
+  });
+
+  it("maps call duration in seconds when plain duration column is present", () => {
+    const values: readonly (readonly (string | number | boolean | null | undefined)[])[] = [
+      ["Date", "Name", "Number", "Request", "Call Duration"],
+      ["2026-03-17T17:00:00Z", "Test Caller", "555-1234", "help", 125],
+    ];
+
+    const [call] = mapSheetValuesToCalls(values);
+
+    expect(call.callDuration).toBe(125);
+  });
+
   it("maps rows using the header row and parses typed fields", () => {
     const values: string[][] = [
       [...SHEET_COLUMNS],

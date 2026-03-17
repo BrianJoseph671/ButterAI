@@ -7,6 +7,10 @@ describe("formatDuration", () => {
     expect(formatDuration(125)).toBe("2:05");
   });
 
+  it("formats longer durations as mm:ss", () => {
+    expect(formatDuration(128)).toBe("2:08");
+  });
+
   it("returns 0:00 for invalid values", () => {
     expect(formatDuration(null)).toBe("0:00");
     expect(formatDuration(undefined)).toBe("0:00");
