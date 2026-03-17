@@ -4,7 +4,7 @@ import type { Call, CallStatus, FinancingInterest } from "@/types/call";
 
 type SheetCell = string | number | boolean | null | undefined;
 
-const SHEET_NAME = "Sheet1";
+const SHEET_NAME = "Calls";
 const SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
 function getRequiredEnv(name: string): string {

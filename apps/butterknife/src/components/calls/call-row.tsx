@@ -91,7 +91,6 @@ export function CallRow({ call, initiallyExpanded = false }: CallRowProps) {
   const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
 
   const leadName = formatText(call.name);
-  const phoneNumber = formatText(call.number);
   const requestText = formatText(call.request);
   const statusLabel = formatStatusLabel(call.callStatus);
   const financingLabel = formatFinancingLabel(call.financingInterest);
@@ -114,7 +113,6 @@ export function CallRow({ call, initiallyExpanded = false }: CallRowProps) {
           <div className="min-w-0">
             <p className="text-sm text-zinc-500">{formatCallDateTime(call.date)}</p>
             <p className="text-base font-semibold text-[#1a1a1a]">{leadName}</p>
-            <p className="text-sm text-zinc-600">{phoneNumber}</p>
           </div>
 
           <div className="flex items-center gap-2 text-sm text-zinc-700">
