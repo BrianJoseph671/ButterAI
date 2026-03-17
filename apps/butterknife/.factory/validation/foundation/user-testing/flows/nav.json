@@ -1,0 +1,87 @@
+{
+  "groupId": "nav",
+  "testedAt": "2026-03-16T20:12:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "nav-test-8ddbda78"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-NAV-001",
+      "title": "Navigation header visible on all 3 pages with Dashboard, Call Feed, Settings links",
+      "status": "blocked",
+      "steps": [
+        { "action": "Navigate to /", "expected": "Header with Dashboard, Call Feed, Settings links", "observed": "Internal Server Error - page failed to load" },
+        { "action": "Navigate to /calls", "expected": "Header with Dashboard, Call Feed, Settings links", "observed": "Internal Server Error - page failed to load" },
+        { "action": "Navigate to /settings", "expected": "Header with Dashboard, Call Feed, Settings links", "observed": "Internal Server Error - page failed to load" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation/nav/VAL-NAV-001-dashboard.png",
+          "foundation/nav/VAL-NAV-001-calls.png",
+          "foundation/nav/VAL-NAV-001-settings.png"
+        ],
+        "consoleErrors": "none (page didn't render)",
+        "network": "GET / -> 500, GET /calls -> 500, GET /settings -> 500"
+      },
+      "issues": "Server returning 500 Internal Server Error on all routes due to Google Sheets API authentication failure (invalid_grant)"
+    },
+    {
+      "id": "VAL-NAV-002",
+      "title": "Active page link is visually distinguished from others",
+      "status": "blocked",
+      "steps": [
+        { "action": "Navigate to each page and check active link styling", "expected": "Current page link has distinct visual styling", "observed": "Pages failed to load - cannot verify" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation/nav/VAL-NAV-001-dashboard.png",
+          "foundation/nav/VAL-NAV-001-calls.png",
+          "foundation/nav/VAL-NAV-001-settings.png"
+        ],
+        "consoleErrors": "none (page didn't render)"
+      },
+      "issues": "Cannot test - prerequisite VAL-NAV-001 blocked"
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Header shows business name from localStorage (default: 'I&M HVAC')",
+      "status": "blocked",
+      "steps": [
+        { "action": "Check header for business name display", "expected": "Business name 'I&M HVAC' visible in header", "observed": "Pages failed to load - cannot verify" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation/nav/VAL-NAV-001-dashboard.png"
+        ],
+        "consoleErrors": "none (page didn't render)"
+      },
+      "issues": "Cannot test - prerequisite VAL-NAV-001 blocked"
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "title": "Butter-yellow (#F5D76E) accent color in header",
+      "status": "blocked",
+      "steps": [
+        { "action": "Inspect header for butter-yellow color", "expected": "Header contains #F5D76E accent color", "observed": "Pages failed to load - cannot verify" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation/nav/VAL-NAV-001-dashboard.png"
+        ],
+        "consoleErrors": "none (page didn't render)"
+      },
+      "issues": "Cannot test - prerequisite VAL-NAV-001 blocked"
+    }
+  ],
+  "frictions": [],
+  "blockers": [
+    {
+      "description": "Next.js server returning 500 Internal Server Error on all routes. Server logs show Google Sheets API authentication failure (invalid_grant). The GOOGLE_PRIVATE_KEY in .env.local appears to be invalid or expired.",
+      "affectedAssertions": ["VAL-NAV-001", "VAL-NAV-002", "VAL-CROSS-007", "VAL-CROSS-008"],
+      "quickFixAttempted": "Retried server start after rebuilding, verified port 3000 is accessible. Issue is Google Sheets API credentials - requires credential refresh/replacement."
+    }
+  ],
+  "summary": "All 4 assertions BLOCKED due to 500 Internal Server Error on all routes. Root cause: Google Sheets API authentication failure (invalid_grant). Navigation header cannot be tested as pages fail to render."
+}

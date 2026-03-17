@@ -1,0 +1,93 @@
+{
+  "groupId": "dash-chart",
+  "testedAt": "2026-03-16T20:30:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "dash-chart-8ddbda78"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-DASH-010",
+      "title": "Bar chart shows 14 days with labeled axes, zero-height bars for empty days",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to dashboard", "expected": "Bar chart visible", "observed": "Bar chart shows 'Calls in the Last 14 Days'" },
+        { "action": "Count days on x-axis", "expected": "14 days shown", "observed": "Chart shows dates Mar 3-16 (14 days)" },
+        { "action": "Check for labeled axes", "expected": "X-axis labeled 'Date', Y-axis labeled 'Calls'", "observed": "Both axes are properly labeled" },
+        { "action": "Verify zero-height bars for empty days", "expected": "All bars at 0 height", "observed": "All 14 days show 0 calls with flat baseline" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/dash-chart/chart-area.png", "foundation/dash-chart/VAL-DASH-010-013-annotated.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/calls -> error, but page handles gracefully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-DASH-011",
+      "title": "Loading skeletons shown while data fetches, never flash 0s",
+      "status": "blocked",
+      "steps": [
+        { "action": "Open dashboard and capture immediately", "expected": "Loading skeletons or shimmer visible", "observed": "Page shows error state immediately - no skeleton loading state observed" },
+        { "action": "Check for loading indicators", "expected": "Skeleton placeholders during data fetch", "observed": "Error banner 'Unable to load dashboard data right now.' appears instantly" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/dash-chart/VAL-DASH-011-loading.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/calls -> error response"
+      },
+      "issues": "API returned error 'Failed to fetch calls', preventing observation of normal loading state. Cannot verify skeleton loading behavior when API is failing."
+    },
+    {
+      "id": "VAL-DASH-012",
+      "title": "Empty/null values never show 'undefined', 'NaN', 'null'",
+      "status": "pass",
+      "steps": [
+        { "action": "Search page text for error strings", "expected": "No 'undefined', 'null', 'NaN' visible", "observed": "All cards display clean values: 0, $0, 0:00, N/A" },
+        { "action": "Check Total Calls card", "expected": "Shows 0", "observed": "Shows '0' for all time, this week, today" },
+        { "action": "Check Average Call Duration", "expected": "Shows valid format", "observed": "Shows '0:00' with proper mm:ss format" },
+        { "action": "Check ROI Estimate", "expected": "Handles $0 cost gracefully", "observed": "Shows '$0' revenue, '$0/mo' cost, 'N/A' for ROI" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/dash-chart/VAL-DASH-010-013-annotated.png", "foundation/dash-chart/chart-area.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/calls -> error response"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-DASH-013",
+      "title": "Cards use clean layout with big numbers and clear labels",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify Total Calls card layout", "expected": "Big number with clear labels", "observed": "Large '0' with 'TOTAL CALLS' header and 'All Time', 'This Week', 'Today' sub-labels" },
+        { "action": "Verify Answered vs Voicemail card", "expected": "Donut chart with legend", "observed": "Clean layout with 'No calls yet' placeholder, legend showing 'Answered: 0' and 'Voicemail: 0'" },
+        { "action": "Verify Qualified Leads card", "expected": "Big number with description", "observed": "Large '0' with descriptive text 'Answered calls with both name and request filled'" },
+        { "action": "Verify Average Call Duration card", "expected": "Big formatted number", "observed": "Large '0:00' with subtitle 'Displayed as minutes:seconds'" },
+        { "action": "Verify ROI Estimate card", "expected": "Revenue, cost, and ROI clearly displayed", "observed": "Clean layout: '$0' revenue, '$0/mo' cost, 'N/A' ROI with clear labels" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/dash-chart/VAL-DASH-010-013-annotated.png"],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "API error on /api/calls prevented testing normal loading state with data",
+      "resolved": false,
+      "resolution": "Page shows error state instead of loading skeletons when API fails",
+      "affectedAssertions": ["VAL-DASH-011"]
+    }
+  ],
+  "blockers": [
+    {
+      "description": "Google Sheets API returned error - 'Failed to fetch calls'. This prevented observing the normal loading flow with actual data.",
+      "affectedAssertions": ["VAL-DASH-011"],
+      "quickFixAttempted": "Server running, but API endpoint returns error. Page handles error gracefully with user-friendly message."
+    }
+  ],
+  "summary": "Tested 4 assertions: 3 passed, 1 blocked. VAL-DASH-010 passed: bar chart correctly shows 14 days with labeled axes and zero-height bars. VAL-DASH-011 blocked: Cannot verify loading skeletons because API error prevents normal data fetch flow. VAL-DASH-012 passed: No 'undefined', 'null', or 'NaN' displayed; all empty values handled gracefully with '0', '$0', '0:00', 'N/A'. VAL-DASH-013 passed: Cards use clean layout with large numbers and clear descriptive labels."
+}
