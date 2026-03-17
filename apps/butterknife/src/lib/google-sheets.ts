@@ -88,6 +88,27 @@ function toCall(
 ): Call {
   const mapped = mapRowByCamelHeaders(headers, row);
 
+  // Support variations of the call duration header.
+  const durationKey = Object.keys(mapped).find((key) => {
+    const normalized = key.toLowerCase();
+    return normalized.startsWith("callduration");
+  });
+
+  let callDuration: number | null = null;
+  if (durationKey) {
+    const numericValue = toNullableNumber(mapped[durationKey]);
+
+    if (numericValue !== null) {
+      if (durationKey.toLowerCase().includes("minutes")) {
+        // Stored as minutes in the sheet → convert to seconds.
+        callDuration = numericValue * 60;
+      } else {
+        // Stored directly as seconds.
+        callDuration = numericValue;
+      }
+    }
+  }
+
   return {
     date: toNullableString(mapped.date),
     name: toNullableString(mapped.name),
@@ -102,7 +123,7 @@ function toCall(
     paymentMethod: toNullableString(mapped.paymentMethod),
     urgency: toNullableString(mapped.urgency),
     availability: toNullableString(mapped.availability),
-    callDuration: toNullableNumber(mapped.callDuration),
+    callDuration,
   };
 }
 

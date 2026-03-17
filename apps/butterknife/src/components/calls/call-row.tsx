@@ -128,7 +128,9 @@ export function CallRow({ call, initiallyExpanded = false }: CallRowProps) {
             {requestText}
           </p>
 
-          <p className="text-sm font-medium text-zinc-700">{formatDuration(call.callDuration)}</p>
+          <p className="text-sm font-medium text-zinc-700">
+            {formatDuration(call.callDuration)} <span className="text-xs text-zinc-600">min</span>
+          </p>
         </div>
       </button>
 
