@@ -1,0 +1,72 @@
+{
+  "featureId": "call-feed-list",
+  "reviewedAt": "2026-03-16T22:00:00.000Z",
+  "commitId": "832b3b0",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The Call Feed List feature is well-implemented with clean component architecture, comprehensive test coverage, and proper adherence to the feature requirements. The implementation successfully replaces the placeholder page with a functional call feed that fetches data from /api/calls, displays reverse-chronological call rows, and provides expandable details with proper conditional field logic.",
+    "issues": [
+      {
+        "file": "src/components/calls/call-feed.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "The call-feed.tsx component contains extensive filter/search functionality (status filter, date range filter, search input) that belongs to the 'call-feed-filters-search' feature. While this was necessary for the worker to build a complete solution, this creates minor feature overlap. The code is clean and well-organized, so no action is required - just noting for architectural clarity."
+      },
+      {
+        "file": "src/components/calls/call-feed.test.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "Similarly, the test file includes comprehensive filter/search tests that extend beyond the call-feed-list feature scope into call-feed-filters-search. The tests are well-written and provide good coverage for the combined functionality."
+      },
+      {
+        "file": "src/components/calls/call-row.tsx",
+        "line": 145,
+        "severity": "non_blocking",
+        "description": "The expandable row details grid uses a responsive layout (sm:grid-cols-2) which may cause visual inconsistency on very small mobile screens (< 640px). Equipment Age, Home Size, and Make/Model labels could stack in unexpected order. Consider testing at 375px viewport as specified in VAL-CROSS-005."
+      },
+      {
+        "file": "src/components/calls/call-row.tsx",
+        "line": 94,
+        "severity": "non_blocking",
+        "description": "formatCallDateTime() uses Intl.DateTimeFormat which produces locale-aware output (e.g., 'Mar 15, 2:30 PM' in en-US). The tests don't explicitly verify the format pattern, relying on snapshot-like assertions. While this works for the current locale, it could produce different outputs in different environments."
+      },
+      {
+        "file": "src/components/calls/call-feed.tsx",
+        "line": 83,
+        "severity": "non_blocking",
+        "description": "The buildCallKey() function uses array index as part of the key. While this is safe for the current reverse-chronological stable sort, if the sorting or filtering changes, React key stability could be affected. Consider using a more stable identifier if the API provides one."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The worker correctly followed AGENTS.md conventions: using Tailwind with shadcn/ui cn() utility, butter-yellow (#F5D76E) accent, dark text (#1a1a1a), proper N/A handling for null values, and mm:ss duration format with zero-padded seconds.",
+      "evidence": "call-row.tsx:94 uses statusDotClass with bg-emerald-500/bg-zinc-400; call-row.tsx uses formatDuration() from lib/format.ts which produces zero-padded output; all null handling uses 'N/A' pattern."
+    },
+    {
+      "area": "conventions",
+      "observation": "The worker correctly implemented the conditional field logic as specified: Credit Score appears ONLY when Financing Interest = 'yes'; Payment Method appears ONLY when Financing Interest = 'no'. The implementation properly excludes the irrelevant field rather than just hiding it with CSS.",
+      "evidence": "call-row.tsx:147-158 uses conditional rendering with isFinancingYes and isFinancingNo booleans to selectively render DetailItem components. Tests verify both branches explicitly."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The worker discovered that the Next.js 16 lint command pattern differs from older versions, updating services.yaml to use 'npm run lint' (eslint .) instead of 'npx next lint'. This knowledge was recorded in prior handoffs and is reflected in the current services.yaml.",
+      "evidence": ".factory/services.yaml:7 shows 'lint: npm run lint' which aligns with the package.json script 'eslint .'. Prior handoff for project-scaffolding noted this discovery."
+    },
+    {
+      "area": "skills",
+      "observation": "Worker noted that the Windows environment lacks bash, requiring fallback to direct npm commands instead of .factory/init.sh. This was a justified deviation documented in handoff.skillFeedback.",
+      "evidence": "Handoff shows skillFeedback.followedProcedure: false with deviation explaining bash unavailability and PowerShell fallback."
+    },
+    {
+      "area": "conventions",
+      "observation": "The implementation properly uses localStorage key prefix 'butter-' for settings as specified in AGENTS.md, though this feature doesn't directly interact with settings.",
+      "evidence": "Verified in AGENTS.md: 'Use a consistent key prefix (e.g., butter-)' - the feature doesn't need to use this but is consistent with the pattern."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "The call-feed-list feature implementation is of high quality and meets all specified requirements. The CallFeed component properly fetches from /api/calls, displays a reverse-chronological list with loading states, and the CallRow component provides expandable details with correct conditional field visibility (Credit Score only when financing=yes, Payment Method only when financing=no). Test coverage is comprehensive with 6 test cases for CallRow covering expand/collapse, status dots, conditional fields, and null handling, plus 2 test cases for CallFeed covering loading state and reverse-chronological ordering. The code follows TypeScript strict mode, uses Tailwind CSS with proper design tokens, and handles edge cases gracefully (null values show 'N/A', invalid dates show 'N/A'). Minor non-blocking observations noted about feature overlap with filters/search (which were added in the same commit for completeness) and key stability using array index."
+}

@@ -1,0 +1,92 @@
+{
+  "groupId": "rerun-api",
+  "testedAt": "2026-03-16T16:46:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "apiEndpoints": ["/api/calls", "/api/calls/stats"],
+    "testingTool": "curl.exe"
+  },
+  "toolsUsed": ["curl.exe"],
+  "assertions": [
+    {
+      "id": "VAL-API-001",
+      "title": "/api/calls returns call data",
+      "status": "blocked",
+      "steps": [
+        {
+          "action": "GET http://localhost:3000/api/calls",
+          "expected": "JSON array of Call objects with all fields, status 200",
+          "observed": "Error response with status 500"
+        }
+      ],
+      "evidence": {
+        "network": "GET /api/calls -> 500",
+        "responseBody": "{\"error\":\"Failed to fetch calls\"}",
+        "responseFile": "foundation/rerun-api/VAL-API-001-response.json"
+      },
+      "issues": "API returns 500 error. Google Sheets API authentication or access issue persists."
+    },
+    {
+      "id": "VAL-API-002",
+      "title": "Empty sheet response",
+      "status": "blocked",
+      "steps": [
+        {
+          "action": "GET /api/calls (same endpoint as VAL-API-001)",
+          "expected": "Empty JSON array [] with status 200 when sheet is empty",
+          "observed": "Same 500 error as VAL-API-001 - cannot determine empty sheet behavior"
+        }
+      ],
+      "evidence": {
+        "network": "GET /api/calls -> 500",
+        "responseBody": "{\"error\":\"Failed to fetch calls\"}"
+      },
+      "issues": "Cannot test empty sheet response due to Sheets API connection failure. Same blocker as VAL-API-001."
+    },
+    {
+      "id": "VAL-API-003",
+      "title": "API error handling",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "GET /api/calls when Sheets API is unreachable",
+          "expected": "Structured error response with appropriate status code",
+          "observed": "Returns { error: 'Failed to fetch calls' } with status 500"
+        }
+      ],
+      "evidence": {
+        "network": "GET /api/calls -> 500",
+        "responseBody": "{\"error\":\"Failed to fetch calls\"}",
+        "note": "Error handling is working as expected - returns proper JSON error object with 500 status"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-API-004",
+      "title": "/api/calls/stats returns aggregated stats",
+      "status": "blocked",
+      "steps": [
+        {
+          "action": "GET http://localhost:3000/api/calls/stats",
+          "expected": "JSON object with totalCalls, answeredCount, voicemailCount, qualifiedLeads, averageDuration, callsPerDay, status 200",
+          "observed": "Error response with status 500"
+        }
+      ],
+      "evidence": {
+        "network": "GET /api/calls/stats -> 500",
+        "responseBody": "{\"error\":\"Failed to fetch call stats\"}",
+        "responseFile": "foundation/rerun-api/VAL-API-004-response.json"
+      },
+      "issues": "Stats endpoint also returns 500 error due to Google Sheets API connection failure."
+    }
+  ],
+  "frictions": [],
+  "blockers": [
+    {
+      "description": "Google Sheets API is returning errors on both /api/calls and /api/calls/stats endpoints. Both endpoints return 500 status with error messages. This appears to be the same authentication/access issue as the prior validation run. Credentials are present in .env.local but the API connection is failing.",
+      "affectedAssertions": ["VAL-API-001", "VAL-API-002", "VAL-API-004"],
+      "quickFixAttempted": "Verified API endpoints are accessible (not 404 or connection refused). Server is responding but returning 500 errors from the Google Sheets service layer."
+    }
+  ],
+  "summary": "Tested 4 assertions: 1 passed (VAL-API-003 error handling works), 3 blocked (VAL-API-001, VAL-API-002, VAL-API-004) due to Google Sheets API failure returning 500 errors on all data endpoints."
+}

@@ -1,0 +1,89 @@
+{
+  "milestone": "foundation",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0, "summary": "35 tests passed across 14 test files" },
+    "typecheck": { "passed": true, "command": "npx tsc --noEmit", "exitCode": 0 },
+    "lint": { "passed": true, "command": "npm run lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Update the lint command reference from 'npx next lint' to 'npm run lint'. The project uses Next.js 16 which doesn't support the 'next lint' subcommand. All workers have encountered this and worked around it by using the npm script instead.",
+      "evidence": "Multiple workers (project-scaffolding, api-routes, app-layout-and-navigation, dashboard-home-page) noted this discrepancy. services.yaml correctly uses 'npm run lint' but AGENTS.md still references the old command.",
+      "isSystemic": true
+    },
+    {
+      "target": "fullstack-worker skill",
+      "suggestion": "Update the skill procedure to reflect that this project uses 'npm run lint' (running eslint .) instead of 'npx next lint'. The current skill mentions this in a parenthetical but the main instruction still shows the old pattern.",
+      "evidence": "Worker for dashboard-home-page noted: 'SKILL.md line under 5. Verify with Type Check and Lint says Run npx tsc --noEmit... but this project uses eslint . via npm script'.",
+      "isSystemic": true
+    }
+  ],
+  "suggestedLibraryUpdates": [
+    {
+      "target": "library/environment.md",
+      "suggestion": "Document that this is a Windows environment without bash availability. Workers should use Windows-compatible commands (powershell, cmd) instead of bash scripts.",
+      "evidence": "Multiple workers reported deviations: 'Could not execute .factory/init.sh directly because bash was unavailable on this Windows shell'",
+      "isSystemic": true
+    },
+    {
+      "target": "library/environment.md",
+      "suggestion": "Document that API routes require valid Google Sheets API credentials to return data. Without proper credentials in .env.local, the API routes will return 500 errors with 'Failed to fetch calls'.",
+      "evidence": "api-routes review noted: 'curl.exe returned {\"error\":\"Failed to fetch calls\"} with status 500, confirming error response shape works correctly when credentials are missing.'",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "AGENTS.md mentions column header to camelCase mapping convention",
+      "reason": "already-documented - AGENTS.md already covers this convention correctly"
+    },
+    {
+      "observation": "AGENTS.md mentions localStorage 'butter-' key prefix convention",
+      "reason": "already-documented - library/architecture.md documents this pattern"
+    },
+    {
+      "observation": "Null handling convention for showing 'N/A' instead of undefined/null/NaN",
+      "reason": "already-documented - AGENTS.md has a dedicated 'Null handling' section"
+    }
+  ],
+  "previousRound": null,
+  "featureReviews": {
+    "project-scaffolding": {
+      "status": "pass",
+      "commitId": "e1ed791",
+      "summary": "Complete Next.js scaffolding with TypeScript types for all 14 Google Sheet columns, Google Sheets service with JWT auth and proper newline handling, comprehensive tests."
+    },
+    "api-routes": {
+      "status": "pass",
+      "commitId": "80bd170",
+      "summary": "Both /api/calls and /api/calls/stats routes implemented with proper error handling, reverse-chronological sorting, stat calculations, and comprehensive tests."
+    },
+    "app-layout-and-navigation": {
+      "status": "pass",
+      "commitId": "ae415b7",
+      "summary": "Root layout with navigation header, butter-yellow brand styling, mobile responsiveness, localStorage business name, placeholder pages."
+    },
+    "dashboard-home-page": {
+      "status": "pass",
+      "commitId": "16efed2",
+      "summary": "All 5 cards (Total Calls, Answered vs Voicemail, Qualified Leads, Average Duration, ROI), 14-day bar chart, loading skeletons, comprehensive tests."
+    }
+  },
+  "reviewFiles": [
+    ".factory/validation/foundation/scrutiny/reviews/project-scaffolding.json",
+    ".factory/validation/foundation/scrutiny/reviews/api-routes.json",
+    ".factory/validation/foundation/scrutiny/reviews/app-layout-and-navigation.json",
+    ".factory/validation/foundation/scrutiny/reviews/dashboard-home-page.json"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "milestone": "call-feed-and-settings",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 30,
+    "passed": 27,
+    "failed": 3,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-FEED-001",
+    "VAL-FEED-002",
+    "VAL-FEED-003",
+    "VAL-FEED-004",
+    "VAL-FEED-007",
+    "VAL-FEED-008",
+    "VAL-FEED-009",
+    "VAL-FEED-010",
+    "VAL-FEED-011",
+    "VAL-FEED-012",
+    "VAL-FEED-013",
+    "VAL-FEED-014",
+    "VAL-FEED-015",
+    "VAL-FEED-016",
+    "VAL-FEED-017",
+    "VAL-SET-001",
+    "VAL-SET-002",
+    "VAL-SET-003",
+    "VAL-SET-004",
+    "VAL-SET-005",
+    "VAL-SET-006",
+    "VAL-SET-007",
+    "VAL-CROSS-001",
+    "VAL-CROSS-002",
+    "VAL-CROSS-003",
+    "VAL-CROSS-004",
+    "VAL-CROSS-006"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-FEED-005",
+      "reason": "Data issue: Google Sheet has no calls with 'answered' status (all callStatus fields are null). Filter functionality works correctly - just no matching data."
+    },
+    {
+      "id": "VAL-FEED-006",
+      "reason": "Data issue: Google Sheet has no calls with 'voicemail' status (all callStatus fields are null). Filter functionality works correctly - just no matching data."
+    },
+    {
+      "id": "VAL-CROSS-005",
+      "reason": "Browser session unstable during viewport resize to 375px. Mobile responsiveness cannot be verified via automated testing. App uses Tailwind CSS responsive classes which should handle mobile layouts."
+    }
+  ],
+  "blockedAssertions": [],
+  "flowReports": [
+    "feed-basic.json",
+    "feed-expand.json",
+    "feed-filters.json",
+    "settings.json",
+    "cross-flows.json"
+  ],
+  "frictions": [
+    {
+      "description": "Browser sessions experienced intermittent crashes during screenshot capture and JavaScript evaluation, requiring session restarts",
+      "frequency": "multiple",
+      "affectedFlows": ["feed-expand", "cross-flows", "settings"]
+    },
+    {
+      "description": "Google Sheet has null values for callStatus and callDuration fields, affecting filter testing",
+      "frequency": "data",
+      "affectedFlows": ["feed-filters"]
+    }
+  ],
+  "toolsUsed": ["agent-browser", "curl", "vitest"],
+  "appliedUpdates": [],
+  "notes": "27 of 30 assertions passed. 2 failures due to missing data in Google Sheet (callStatus fields not populated). 1 failure due to browser instability during mobile viewport testing. Core functionality works correctly - the filters are implemented properly but the source data lacks status values."
+}

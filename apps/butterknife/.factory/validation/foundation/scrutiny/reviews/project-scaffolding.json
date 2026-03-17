@@ -1,0 +1,41 @@
+{
+  "featureId": "project-scaffolding",
+  "reviewedAt": "2026-03-16T20:00:00.000Z",
+  "commitId": "e1ed791",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The project-scaffolding feature successfully establishes the Next.js foundation with TypeScript, Tailwind CSS, shadcn/ui, Recharts, and Vitest. The implementation includes complete type definitions for all 14 Google Sheet columns, a robust Google Sheets service with proper authentication and data transformation, and comprehensive tests. All code follows AGENTS.md conventions with proper null handling, type safety, and camelCase field mapping.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "services",
+      "observation": "The AGENTS.md lint command documentation (step 5) specifies `npx next lint` but Next.js 16 in this project doesn't support that subcommand. The worker correctly identified this and updated `.factory/services.yaml` to use `npm run lint` (which runs `eslint .`). The skill already documents this fix, but AGENTS.md still references the old command.",
+      "evidence": "AGENTS.md line: 'Run `npx next lint` -- fix all lint errors.' vs services.yaml which now correctly uses 'npm run lint'. Worker handoff skillFeedback notes: 'Next.js 16 no longer supports the `next lint` subcommand in this setup.'"
+    },
+    {
+      "area": "skills",
+      "observation": "The worker followed most of the fullstack-worker skill procedure but had deviations documented in skillFeedback. Two deviations were environment-related (bash unavailable on Windows, baseline validation expected to fail for scaffolding). The third deviation (lint command change) was a legitimate discovery that improved the shared state. The skill's suggestedChanges field was used appropriately to capture this improvement.",
+      "evidence": "Handoff skillFeedback shows deviations for: 1) bash unavailable, 2) baseline validation expected failure, 3) lint command fix. All deviations were justified and documented."
+    },
+    {
+      "area": "conventions",
+      "observation": "The worker correctly followed the documented convention for handling GOOGLE_PRIVATE_KEY newline escapes. The implementation in `normalizePrivateKey()` properly converts `\\n` sequences to actual newlines for JWT auth. This matches the AGENTS.md documentation.",
+      "evidence": "src/lib/google-sheets.ts:18-20 - `normalizePrivateKey` function replaces /\\\\n/g with actual newlines. AGENTS.md states: 'Handle the GOOGLE_PRIVATE_KEY env var which contains `\\n` escape sequences that need to be converted to actual newlines.'"
+    },
+    {
+      "area": "conventions",
+      "observation": "The worker correctly implemented the column header to camelCase mapping as specified in AGENTS.md and architecture.md. The `toCamelCase` function handles special characters like '/' in 'Make/Model' correctly, mapping it to 'makeModel'. All 14 columns from SHEET_COLUMNS are properly mapped.",
+      "evidence": "src/types/call.ts defines SHEET_COLUMNS with 'Make/Model'. src/lib/google-sheets.ts:22-27 toCamelCase function correctly converts this to 'makeModel'. Test confirms: expect(toCamelCase('Make/Model')).toBe('makeModel')."
+    },
+    {
+      "area": "conventions",
+      "observation": "The worker correctly handled null/undefined values throughout the codebase. The Call interface uses `| null` for all optional fields, and the transformation functions use `toNullableString()` and `toNullableNumber()` to ensure undefined never leaks through. This matches AGENTS.md's 'Null handling' convention.",
+      "evidence": "src/types/call.ts:5-20 - all optional fields typed as `| null`. src/lib/google-sheets.ts:29-49 - toNullableString/toNullableNumber return null instead of undefined. Test case: 'fills missing trailing cells with null (never undefined)' validates this."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "The project-scaffolding feature is complete and passes review. The worker successfully: (1) Scaffolded Next.js with all required dependencies, (2) Created complete TypeScript types covering all 14 Google Sheet columns with proper nullability, (3) Implemented the Google Sheets service with service account auth, GOOGLE_PRIVATE_KEY newline handling, and camelCase field mapping, (4) Wrote 5 comprehensive tests covering header mapping, row transformation, null handling, empty sheets, and private key normalization. All validators passed (tests, typecheck, lint). The worker documented legitimate deviations from skill procedure due to Windows environment constraints and discovered/fixed a lint command issue that improved the project's shared services configuration."
+}

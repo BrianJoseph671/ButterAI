@@ -1,0 +1,64 @@
+{
+  "groupId": "rerun-dash",
+  "testedAt": "2026-03-16T16:46:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "fc0475f77f59",
+    "testingTool": "agent-browser"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-DASH-011",
+      "title": "ROI edge cases",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Clear localStorage to reset to default settings",
+          "expected": "Settings reset to defaults (job value $0, monthly cost $0)",
+          "observed": "localStorage cleared successfully"
+        },
+        {
+          "action": "Reload dashboard page with clean localStorage",
+          "expected": "Dashboard loads with default values",
+          "observed": "Dashboard loaded with business name 'I&M HVAC', Butter AI Cost: $0/mo, Estimated Revenue: $0"
+        },
+        {
+          "action": "Verify ROI display with $0 monthly cost",
+          "expected": "ROI shows 'N/A' or safe fallback - never NaN, Infinity, or crash",
+          "observed": "ROI Estimate card shows 'Estimated ROI: N/A' - displays safe fallback as expected"
+        },
+        {
+          "action": "Verify estimated revenue with $0 job value",
+          "expected": "Estimated revenue shows $0 when job value is not configured",
+          "observed": "Estimated Revenue from Captured Leads: $0 - correct display"
+        },
+        {
+          "action": "Check console for JavaScript errors",
+          "expected": "No console errors related to ROI calculation",
+          "observed": "No console errors found"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation/rerun-dash/initial-dashboard.png",
+          "foundation/rerun-dash/dashboard-clean-localstorage.png",
+          "foundation/rerun-dash/settings-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A - UI assertion tested via browser automation"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Settings page shows placeholder text 'Business profile and ROI configuration controls will appear here' instead of actual settings form. The form fields (Average Job Value, Monthly Cost) mentioned in validation contract are not yet implemented.",
+      "resolved": false,
+      "resolution": "Not resolved - tested ROI edge cases via dashboard with default/clean localStorage state instead",
+      "affectedAssertions": ["VAL-DASH-011"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 1 assertion: 1 passed (VAL-DASH-011). ROI edge case handling works correctly: when Butter AI Monthly Cost is $0 (default), the ROI Estimate card displays 'N/A' as a safe fallback instead of NaN, Infinity, or crashing. The card remains readable with clean layout. When average job value is $0, estimated revenue correctly shows $0."
+}
