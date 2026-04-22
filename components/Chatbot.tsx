@@ -6,7 +6,7 @@ const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
-    { sender: 'ai', text: 'Hi! I\'m the Butter AI assistant. Ask me anything about our product or how we help prevent churn.' }
+    { sender: 'ai', text: 'Hi! I am the Butter AI assistant. Ask me about how Alex helps HVAC teams respond faster and book more jobs.' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const chatRef = useRef<Chat | null>(null);
@@ -24,7 +24,7 @@ const Chatbot: React.FC = () => {
     chatRef.current = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
-        systemInstruction: 'You are a helpful and friendly chatbot for Butter AI, a company that helps SaaS founders predict customer churn. Your goal is to answer questions about the company, its product, and the problem it solves. Keep your answers concise, informative, and maintain a positive, startup-friendly tone.',
+        systemInstruction: 'You are a helpful and friendly chatbot for Butter AI, an AI voice agent for HVAC contractors. Focus on speed-to-lead, inbound callbacks in seconds, lead qualification, appointment booking, outbound maintenance campaigns, and after-hours coverage. Keep answers concise, practical, and contractor-friendly.',
       },
     });
   }, []);

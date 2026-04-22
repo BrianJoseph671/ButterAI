@@ -34,17 +34,16 @@ const Hero: React.FC = () => {
 
       <div className="container mx-auto px-6 text-center relative z-10">
         <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-4">
-          See Customer Churn<br />
-          Before It Happens
+          Never Miss Another HVAC Lead
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-          Unlock predictive insights and stop churn in its tracks. Butter AI gives you the clarity to act before your customers walk away.
+          AI voice agent that calls back your leads in seconds, qualifies them, and books the appointment. 24/7 coverage without hiring staff.
         </p>
         <a 
           href="#contact" 
           className="bg-butter-DEFAULT hover:bg-butter-dark text-gray-900 font-bold py-4 px-8 rounded-lg text-lg transition-transform transform hover:scale-105 inline-block shadow-lg shadow-amber-300/50"
         >
-          Get Early Access
+          See It In Action
         </a>
       </div>
     </section>

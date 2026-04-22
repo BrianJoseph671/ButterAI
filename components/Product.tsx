@@ -21,23 +21,35 @@ const LightningIcon = () => (
 const Product: React.FC = () => {
   const features = [
     {
-      title: "Customer Health Scoring",
-      description: "Go beyond simple metrics. Our AI analyzes behavioral patterns across all your touchpoints to generate a dynamic, real-time health score for every customer."
+      title: "Instant Inbound Callback",
+      description: "When a lead comes in, Alex calls back in seconds so your shop does not lose jobs to slow response times."
     },
     {
-      title: "Insight Summaries",
-      description: "No more digging through dashboards. Butter AI delivers plain-English summaries explaining *why* a customer is at risk, so you can take targeted action."
+      title: "Outbound Campaigns",
+      description: "Call past customers for seasonal tune-ups, maintenance reminders, and reactivation campaigns your team does not have time to run."
     },
     {
-      title: "Automated Alerts",
-      description: "Get notified in Slack the moment a high-value customer shows signs of churn. Our alerts are timely, specific, and actionable, right where your team works."
+      title: "After-Hours Coverage",
+      description: "Capture nights and weekends without adding headcount. Butter AI keeps responding when your office is closed."
+    },
+    {
+      title: "Custom Qualification",
+      description: "Ask your questions your way: house size, equipment age, urgency, financing interest, and payment method."
+    },
+    {
+      title: "Appointment Booking",
+      description: "Alex helps lock in next steps and schedules appointments with your workflow and calendar process."
+    },
+    {
+      title: "Lead Brief Delivery",
+      description: "Every call ends with a clean handoff sent by text, email, or CRM so your team is ready to close."
     }
   ];
 
   const statsData = [
-    { icon: <StarIcon />, value: '5-7x', description: 'Cheaper to keep customers than acquire new ones' },
-    { icon: <TrendUpIcon />, value: '3x ROI', description: 'Return on investment from retention vs acquisition' },
-    { icon: <LightningIcon />, value: '95%', description: 'Accuracy in predicting customer churn' },
+    { icon: <StarIcon />, value: '21x', description: 'Higher conversion when you respond in under 5 minutes' },
+    { icon: <TrendUpIcon />, value: '47 min', description: 'Average response time in home services you are competing against' },
+    { icon: <LightningIcon />, value: '11%', description: 'Booking rate on outbound calls to a 26,000-record customer database' },
   ];
 
   return (
@@ -45,11 +57,11 @@ const Product: React.FC = () => {
       <div className="container mx-auto px-6">
         {/* Top Section: Features */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">The Power of Proactive Retention</h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Everything you need to turn customer data into your biggest advantage.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Built for Real HVAC Workflows</h2>
+          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">From inbound rescue to outbound maintenance campaigns, Butter AI helps fill the schedule.</p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8 mb-24">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {features.map((feature, index) => (
             <div key={index} className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
@@ -59,10 +71,10 @@ const Product: React.FC = () => {
         </div>
 
         {/* Bottom Section: Stats */}
-        <div className="border-t border-gray-100 pt-16">
+        <div id="stats" className="border-t border-gray-100 pt-16">
             <div className="text-center mb-12">
-                <h3 className="text-2xl font-bold text-gray-900">Why Retention Matters</h3>
-                <p className="text-gray-500 mt-2">The math is simple. Keeping customers is the key to growth.</p>
+                <h3 className="text-2xl font-bold text-gray-900">The Speed-to-Lead Numbers</h3>
+                <p className="text-gray-500 mt-2">Fast response wins booked jobs. Slow response loses them.</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">

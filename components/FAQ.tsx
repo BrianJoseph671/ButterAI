@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 
 const faqs = [
     {
-        question: "How does Butter AI connect to my data?",
-        answer: "Butter AI features one-click integrations with popular tools like Salesforce, HubSpot, Stripe, Intercom, and Zendesk. For custom data sources, we offer a robust API and webhook support. The initial sync usually takes less than 30 minutes."
+        question: "Will it sound like a robot?",
+        answer: "No. Alex uses natural voice AI, and customers regularly do not realize they are speaking with an AI agent."
     },
     {
-        question: "Is my customer data secure?",
-        answer: "Absolutely. Security is our top priority. We use bank-grade encryption for data in transit and at rest. We are SOC 2 Type II compliant and never sell your data to third parties. Our AI models are trained on your data in an isolated environment."
+        question: "What if I already have someone answering phones?",
+        answer: "This is not a replacement for your team. It adds coverage for after-hours, overflow, and outbound campaigns your team may not have time to run."
     },
     {
-        question: "How accurate are the churn predictions?",
-        answer: "Our models typically achieve 90-95% accuracy after the first 4 weeks of learning your specific customer behaviors. The system gets smarter over time as it processes more of your historical and real-time data."
+        question: "How much does it cost?",
+        answer: "Pricing is commission-based and tied to jobs booked. You pay when it works."
     },
     {
-        question: "Can I try it before I buy?",
-        answer: "Yes! We are currently opening spots for our Early Access program which includes a 30-day free trial. You can see your customer health scores and receive churn alerts completely free during this period."
+        question: "How fast can I get started?",
+        answer: "Most contractors can have their AI agent live within a week."
     }
 ];
 
@@ -50,7 +50,7 @@ const FAQItem: React.FC<{ question: string; answer: string }> = ({ question, ans
 
 const FAQ: React.FC = () => {
     return (
-        <section className="py-20 md:py-28 bg-gray-50">
+        <section id="faq" className="py-20 md:py-28 bg-gray-50">
             <div className="container mx-auto px-6 max-w-4xl">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Frequently Asked Questions</h2>
