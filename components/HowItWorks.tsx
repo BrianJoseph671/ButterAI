@@ -23,18 +23,18 @@ const ChartBarIcon = () => (
 const steps = [
     {
         icon: <TargetIcon />,
-        title: 'Connect Your Data',
-        description: 'Seamlessly integrate with your CRM, billing, and support tools. Our AI starts learning from day one.'
+        title: 'Lead Comes In',
+        description: 'A form submission, missed call, or after-hours emergency triggers Butter AI the moment the lead appears.'
     },
     {
         icon: <LightningIconHIW />,
-        title: 'Get AI Insights',
-        description: 'Our AI analyzes patterns, predicts churn risk, and identifies upsell opportunities in real-time.'
+        title: 'AI Calls Back Instantly',
+        description: 'Alex calls within seconds, asks qualification questions, and books the appointment when possible.'
     },
     {
         icon: <ChartBarIcon />,
-        title: 'Take Action',
-        description: 'Get personalized action plans and automated workflows to retain customers and grow revenue.'
+        title: 'You Get the Brief',
+        description: 'Your team receives a complete handoff with need, urgency, availability, and payment preferences.'
     }
 ];
 
@@ -44,7 +44,7 @@ const HowItWorks: React.FC = () => {
             <div className="container mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold text-gray-900">How It Works</h2>
-                    <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Three simple steps to revolutionize your customer retention</p>
+                    <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Three simple steps to stop losing leads and book more jobs.</p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-10">
                     {steps.map((step, index) => (
